@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Countdown 50 năm HCMUE</title>
+<style>
+/* Khung ngang 2080x1120 = đúng tỉ lệ màn LED 4160x2240mm (13:7). Hình ảnh lấy từ file thiết kế Countdown.ai. Chạy offline: font nằm trong fonts/. */
+@font-face {
+  font-family: "Montserrat";
+  src: url("fonts/Montserrat-VF.ttf") format("truetype");
+  font-weight: 100 900; font-style: normal;
+}
+@font-face {
+  font-family: "Montserrat";
+  src: url("fonts/Montserrat-Italic-VF.ttf") format("truetype");
+  font-weight: 100 900; font-style: italic;
+}
+@font-face {
+  font-family: "Gilroy Black";
+  src: local("SVN-Gilroy Black"), local("SVN-GilroyBlack"), local("SVN-Gilroy-Black"),
+       url("fonts/SVN-Gilroy-Black.otf") format("opentype"),
+       url("fonts/SVN-Gilroy-Black.ttf") format("truetype");
+  font-weight: 900;
+}
+:root {
+  --navy: #031a8f;
+  --ice: #ffffff;
+  --gold: #fbb040;
+  --red: #ce383d;
+  --ink: #124874;
+  --paper: #ffffff;
+  --gilroy: "Gilroy Black", "Montserrat", system-ui, sans-serif;
+  --mont: "Montserrat", system-ui, sans-serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { height: 100%; margin: 0; }
+body { background: var(--navy); color: var(--ice); overflow: hidden; font-family: var(--mont); }
+body.idle { cursor: none; }
+
+#stage {
+  position: absolute; left: 50%; top: 50%;
+  width: 2080px; height: 1120px;
+  overflow: hidden;
+  background: var(--navy);
+}
+.bg {
+  position: absolute; left: 0; top: 0; width: 2080px; height: 880px;
+  background: url("assets/bg.jpg") center bottom / cover no-repeat;
+}
+.building {
+  /* bậc thềm tòa nhà đặt trên điểm hội tụ vệt sáng: bg.jpg (825,805) x1.3, lệch -290 → (1072,756) */
+  position: absolute; left: 1072px; bottom: 348px; width: 1000px;
+  transform: translateX(-50%);
+  opacity: .9;
+}
+
+/* header */
+.logo-l { position: absolute; left: 50px; top: 34px; height: 128px; }
+.logo-r { position: absolute; right: 50px; top: 26px; height: 144px; }
+.titles {
+  position: absolute; left: 0; right: 0; top: 128px;
+  text-align: center; text-transform: uppercase; white-space: nowrap;
+  font-family: var(--gilroy); font-weight: 900;
+  text-shadow: 0 3px 12px rgba(0,10,80,.55);
+}
+.titles .l1 { font-size: 54px; line-height: 1.2; }
+.titles .l2 { font-size: 49px; line-height: 1.2; color: var(--gold); }
+
+/* cột trái: còn / số / đơn vị */
+.hero { position: absolute; left: 30px; top: 250px; width: 1040px; height: 690px; }
+.hero .con { position: absolute; left: 40px; top: 30px; height: 330px; }
+.num {
+  position: absolute; left: 50%; top: 40px;
+  transform: translateX(-50%);
+  display: flex; align-items: flex-start; justify-content: center;
+}
+.num img { height: 590px; display: block; }
+.num img + img { margin-left: -60px; }
+.num .txt {
+  font: italic 900 440px/1 var(--mont);
+  color: var(--ice);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap; margin-top: -30px;
+  text-shadow:
+    -3px -3px 0 #ffffff,
+    3px 3px 0 #cfeaff, 6px 6px 0 #9fd0ff, 9px 9px 0 #6aaeff, 12px 12px 0 #3f86f5,
+    15px 15px 0 #2a64e0, 18px 18px 0 #1d4cc4, 21px 21px 0 #143aa3, 24px 24px 0 #0d2b80,
+    30px 40px 40px rgba(0,10,60,.6);
+}
+.num .txt.long { font-size: 400px; margin-top: 10px; }
+.unit { position: absolute; right: 0; top: 300px; }
+.unit img { height: 330px; display: block; }
+.unit .txt {
+  display: block; margin-top: 20px;
+  font: italic 900 150px/1 var(--mont); color: var(--ice);
+  text-shadow: 0 3px 0 #cfeaff, 0 6px 0 #6aaeff, 0 9px 0 #2a64e0, 0 12px 0 #143aa3, 0 18px 24px rgba(0,10,60,.6);
+}
+.pop { animation: pop .55s cubic-bezier(.2,1.6,.4,1); }
+@keyframes pop {
+  0% { transform: translateX(-50%) scale(.85); filter: brightness(1.7); }
+  100% { transform: translateX(-50%) scale(1); filter: brightness(1); }
+}
+
+/* cột phải */
+.side {
+  position: absolute; left: 1090px; top: 272px; width: 930px; height: 590px;
+  display: flex; flex-direction: column; align-items: center; justify-content: space-between;
+  text-align: center;
+}
+.clock { display: flex; gap: 22px; }
+.cell {
+  width: 200px; padding: 14px 0 10px;
+  border-radius: 22px;
+  background: linear-gradient(180deg, rgba(120,190,255,.30), rgba(10,40,160,.40));
+  border: 2px solid rgba(170,220,255,.6);
+  box-shadow: inset 0 2px 0 rgba(255,255,255,.35), 0 10px 30px rgba(0,10,70,.45);
+}
+.cell b {
+  display: block; font: 900 100px/1 var(--mont);
+  font-variant-numeric: tabular-nums; color: var(--ice);
+  text-shadow: 0 0 24px rgba(89,214,255,.6);
+}
+.cell span { font: 800 24px/1.5 var(--mont); letter-spacing: .14em; text-transform: uppercase; color: #cfe6ff; }
+
+.venue { font-family: var(--gilroy); font-weight: 900; text-shadow: 0 4px 16px rgba(0,10,70,.85); }
+.venue .v1 { font-size: 66px; line-height: 1.2; white-space: nowrap; }
+.venue .v2 { font-size: 66px; line-height: 1.2; white-space: nowrap; font-variant-numeric: tabular-nums; }
+
+.slogan .s1 {
+  font: 800 80px/1.05 var(--mont); color: var(--ice);
+  -webkit-text-stroke: 8px var(--ink); paint-order: stroke fill;
+}
+.slogan .s2 {
+  margin-top: 6px;
+  font: 800 37px/1.2 var(--mont); color: var(--red); text-transform: uppercase;
+  -webkit-text-stroke: 8px var(--paper); paint-order: stroke fill;
+  white-space: nowrap;
+}
+
+/* tài trợ */
+.sponsors {
+  position: absolute; left: 0; right: 0; bottom: 0; height: 240px;
+  background: var(--paper); color: var(--ink);
+  padding: 14px 44px 16px;
+  display: flex; flex-direction: column; gap: 8px;
+}
+.sponsors h3 { margin: 0; font: 800 34px/1.2 var(--mont); text-wrap: balance; }
+.logos {
+  flex: 1; min-height: 0;
+  display: flex; flex-wrap: wrap; align-content: space-evenly; justify-content: space-between;
+  column-gap: 18px;
+}
+.logos img { height: 74px; max-width: 168px; object-fit: contain; }
+
+/* sau giờ khai mạc */
+.live {
+  position: absolute; left: 0; right: 0; top: 200px; height: 680px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 36px;
+  text-align: center;
+}
+.live .big {
+  font: italic 900 170px/1.05 var(--mont); color: var(--ice);
+  text-shadow: 0 4px 0 #6fb2ff, 0 9px 0 #1a45c4, 0 0 60px rgba(89,214,255,.6);
+}
+.live .sub { font: 900 60px/1.2 var(--gilroy); color: var(--gold); text-transform: uppercase; }
+
+.hint {
+  position: fixed; right: 12px; bottom: 12px; z-index: 5;
+  font: 600 13px var(--mont); color: rgba(255,255,255,.8);
+  background: rgba(0,0,0,.5); padding: 6px 10px; border-radius: 8px;
+  transition: opacity .4s;
+}
+body.idle .hint { opacity: 0; }
+
+@media (prefers-reduced-motion: reduce) { .pop { animation: none; } }
+</style>
+</head>
+<body>
+<div id="stage">
+  <div class="bg"></div>
+  <img class="building" id="building" src="assets/building.png" alt="">
+
+  <img class="logo-l" src="logos/hcmue.png" alt="Trường ĐHSP TP.HCM">
+  <img class="logo-r" src="logos/50nam.png" alt="50 năm HCMUE">
+  <div class="titles">
+    <div class="l1">Lễ kỉ niệm 50 năm Ngày truyền thống</div>
+    <div class="l2">Trường Đại học Sư phạm Thành phố Hồ Chí Minh</div>
+  </div>
+
+  <section class="hero" id="hero">
+    <img class="con" src="assets/con.png" alt="còn">
+    <div class="num" id="num"></div>
+    <div class="unit" id="unit"></div>
+  </section>
+
+  <section class="side" id="side">
+    <div class="clock">
+      <div class="cell"><b id="cd">00</b><span>Ngày</span></div>
+      <div class="cell"><b id="ch">00</b><span>Giờ</span></div>
+      <div class="cell"><b id="cm">00</b><span>Phút</span></div>
+      <div class="cell"><b id="cs">00</b><span>Giây</span></div>
+    </div>
+    <div class="venue">
+      <div class="v1">Hội trường Chất lượng</div>
+      <div class="v2">08g30, ngày 24/10/2026</div>
+    </div>
+    <div class="slogan">
+      <div class="s1">50 năm HCMUE</div>
+      <div class="s2">Tự hào truyền thống, kiến tạo tương lai</div>
+    </div>
+  </section>
+
+  <section class="live" id="live" hidden>
+    <div class="big">Chào&nbsp;mừng<br>quý&nbsp;vị&nbsp;đại&nbsp;biểu</div>
+    <div class="sub">Lễ kỉ niệm 50 năm Ngày truyền thống đang diễn&nbsp;ra</div>
+  </section>
+
+  <footer class="sponsors">
+    <h3>Các&nbsp;đơn&nbsp;vị tài&nbsp;trợ, đồng&nbsp;hành</h3>
+    <div class="logos" id="logos"></div>
+  </footer>
+</div>
+<div class="hint">Nhấn F hoặc nhấp chuột để toàn màn hình</div>
+
+<script>
+// ===== CẤU HÌNH =====
+// Giờ khai mạc tính theo giờ Việt Nam (UTC+7), không phụ thuộc múi giờ của máy chiếu.
+const EVENT_TIME = "2026-10-24T08:30:00+07:00";
+
+// Logo tài trợ trong thư mục logos/, theo thứ tự hiển thị.
+const SPONSOR_LOGOS = [
+  "01-pvcombank", "02-vietinbank", "03-agribank", "04-vietcombank", "05-the-cocoon",
+  "06-flcenter", "07-saomai", "08-trung-tam", "09-cd-sai-gon", "10-phu-tho",
+  "11-truong-sa-group", "12-ktc", "13-dlcorp", "14-bitex", "15-igroup", "16-sp-home",
+  "17-kingtek", "18-ctihsk", "19-sejong", "20-kit", "21-weset", "22-acsa",
+  "23-nam-viet", "24-cd-binh-duong", "25-khanh-travel", "26-vuong-mien",
+].map(n => `logos/${n}.png`);
+
+// Chữ số và đơn vị dạng ảnh 3D (xuất từ AI). Thiếu file nào thì tự dùng chữ CSS thay thế.
+const DIGIT_IMG = d => `assets/so-${d}.png`;
+const UNIT_IMG = { "ngày": "assets/ngay.png", "giờ": "assets/gio.png", "phút": "assets/phut.png", "giây": "assets/giay.png" };
+// =====================
+
+const W = 2080, H = 1120;
+const params = new URLSearchParams(location.search);
+const target = Date.parse(params.get("target") || EVENT_TIME);
+// ?now=2026-10-24T08:29:50%2B07:00 để diễn tập chuyển cảnh
+const offset = params.get("now") ? Date.parse(params.get("now")) - Date.now() : 0;
+
+const $ = id => document.getElementById(id);
+const pad = n => String(n).padStart(2, "0");
+
+function fit() {
+  const s = Math.min(innerWidth / W, innerHeight / H);
+  $("stage").style.transform = `translate(-50%, -50%) scale(${s})`;
+}
+addEventListener("resize", fit);
+fit();
+
+for (const src of SPONSOR_LOGOS) {
+  const img = new Image();
+  img.src = src; img.alt = "";
+  img.onerror = () => img.remove();
+  $("logos").append(img);
+}
+
+// nạp sẵn ảnh chữ số / đơn vị, chỉ dùng những ảnh có thật
+const ok = new Set();
+let lastKey = null;
+function probe(src) {
+  const img = new Image();
+  img.onload = () => { ok.add(src); lastKey = null; };
+  img.src = src;
+}
+for (let d = 0; d <= 9; d++) probe(DIGIT_IMG(d));
+Object.values(UNIT_IMG).forEach(probe);
+
+function el(tag, cls, text) {
+  const e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (text != null) e.textContent = text;
+  return e;
+}
+function img(src) { const i = new Image(); i.src = src; i.alt = ""; return i; }
+
+function renderBig(big, unit) {
+  const digits = String(big).split("");
+  const num = $("num");
+  if (digits.every(d => ok.has(DIGIT_IMG(d)))) {
+    num.replaceChildren(...digits.map(d => img(DIGIT_IMG(d))));
+  } else {
+    num.replaceChildren(el("span", "txt" + (digits.length > 1 ? " long" : ""), big));
+  }
+  num.classList.remove("pop"); void num.offsetWidth; num.classList.add("pop");
+  const u = UNIT_IMG[unit];
+  $("unit").replaceChildren(ok.has(u) ? img(u) : el("span", "txt", unit));
+}
+
+function tick() {
+  const diff = target - (Date.now() + offset);
+  const done = diff <= 0;
+  $("hero").hidden = done;
+  $("side").hidden = done;
+  $("building").hidden = done;
+  $("live").hidden = !done;
+  if (!done) {
+    const t = Math.floor(diff / 1000);
+    const d = Math.floor(t / 86400), h = Math.floor(t % 86400 / 3600),
+          m = Math.floor(t % 3600 / 60), s = t % 60;
+    $("cd").textContent = pad(d); $("ch").textContent = pad(h);
+    $("cm").textContent = pad(m); $("cs").textContent = pad(s);
+
+    let big, unit;
+    if (d > 0) { big = d; unit = "ngày"; }
+    else if (h > 0) { big = h; unit = "giờ"; }
+    else if (m > 0) { big = m; unit = "phút"; }
+    else { big = s; unit = "giây"; }
+
+    const key = big + unit;
+    if (key !== lastKey) { renderBig(big, unit); lastKey = key; }
+  }
+  setTimeout(tick, 1000 - ((Date.now() + offset) % 1000) + 5);
+}
+tick();
+
+// Toàn màn hình, giữ màn hình luôn sáng, ẩn chuột khi không dùng
+function goFull() {
+  const de = document.documentElement;
+  if (!document.fullscreenElement && de.requestFullscreen) de.requestFullscreen().catch(() => {});
+}
+addEventListener("click", goFull);
+addEventListener("keydown", e => { if (e.key === "f" || e.key === "F") goFull(); });
+
+async function keepAwake() { try { await navigator.wakeLock?.request("screen"); } catch {} }
+keepAwake();
+document.addEventListener("visibilitychange", () => { if (!document.hidden) keepAwake(); });
+
+let idleTimer;
+function wakeCursor() {
+  document.body.classList.remove("idle");
+  clearTimeout(idleTimer);
+  idleTimer = setTimeout(() => document.body.classList.add("idle"), 2500);
+}
+addEventListener("mousemove", wakeCursor);
+wakeCursor();
+</script>
+</body>
+</html>
