@@ -79,6 +79,9 @@ body.idle { cursor: none; }
 }
 .num img { height: 590px; display: block; }
 .num img + img { margin-left: -60px; }
+.num.two { margin-left: 110px; }
+.num.two img { height: 540px; }
+.num.two img + img { margin-left: -55px; }
 .num .txt {
   font: italic 900 440px/1 var(--mont);
   color: var(--ice);
@@ -289,7 +292,9 @@ function img(src) { const i = new Image(); i.src = src; i.alt = ""; return i; }
 function renderBig(big, unit) {
   const digits = String(big).split("");
   const num = $("num");
-  if (digits.every(d => ok.has(DIGIT_IMG(d)))) {
+  const useImg = digits.every(d => ok.has(DIGIT_IMG(d)));
+  num.classList.toggle("two", useImg && digits.length > 1);
+  if (useImg) {
     num.replaceChildren(...digits.map(d => img(DIGIT_IMG(d))));
   } else {
     num.replaceChildren(el("span", "txt" + (digits.length > 1 ? " long" : ""), big));

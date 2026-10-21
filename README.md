@@ -27,16 +27,16 @@ Màn hình đếm ngược trình chiếu trên màn LED cho **Lễ kỉ niệm 
 | Hình thức | Trang web tĩnh (HTML) chạy trên Google Chrome hoặc Microsoft Edge |
 | Kết nối mạng | Không cần. Toàn bộ hình ảnh, logo và font chữ nằm sẵn trong thư mục |
 | Thời điểm đếm | 08g30 ngày 24/10/2026, tính theo giờ Việt Nam (UTC+7), không phụ thuộc múi giờ của máy |
-| Nguồn hình ảnh | Tách từ file thiết kế gốc `Countdown.ai` (ảnh nền, tòa nhà, chữ 3D, logo) |
+| Nguồn hình ảnh | Tách từ file thiết kế gốc `Countdown.ai` (ảnh nền, tòa nhà, chữ 3D, logo); bộ số 3D 0–9 và chữ giờ/phút/giây do designer cung cấp |
 
 ## 2. Nội dung thư mục
 
 | Thành phần | Mô tả |
 |---|---|
 | `index.html` | Trang trình chiếu. Đây là file cần mở |
-| `assets/` | Ảnh nền, hình tòa nhà, chữ 3D "còn", "ngày" và số "3" |
+| `assets/` | Ảnh nền, hình tòa nhà, bộ số 3D `so-0.png` … `so-9.png`, chữ 3D "còn", "ngày", "giờ", "phút", "giây" |
 | `logos/` | Logo Trường, logo 50 năm và 26 logo đơn vị tài trợ, đánh số theo thứ tự hiển thị |
-| `fonts/` | Font Montserrat (giấy phép OFL, miễn phí) để chạy không cần mạng |
+| `fonts/` | Font SVN-Gilroy Black (tiêu đề, địa điểm) và Montserrat (các chữ còn lại) để chạy không cần mạng |
 | `docs/` | Ảnh chụp màn hình dùng trong tài liệu này |
 | `HUONG-DAN-TRIEN-KHAI.docx` | Bản Word của tài liệu này |
 
@@ -45,6 +45,9 @@ Màn hình đếm ngược trình chiếu trên màn LED cho **Lễ kỉ niệm 
 ```bash
 git clone https://github.com/tamars07/countdown_50_nam_HCMUE.git countdown-50nam
 ```
+
+> [!NOTE]
+> File font `fonts/SVN-Gilroy-Black.otf` là font thương mại nên **không có trên GitHub**, chỉ có trong gói zip bàn giao. Bản tải từ GitHub vẫn chạy bình thường, tiêu đề và địa điểm sẽ hiển thị bằng Montserrat. Khi chạy trên màn LED, nên dùng gói zip bàn giao hoặc chép file font này vào `fonts/`.
 
 > [!IMPORTANT]
 > Luôn giữ nguyên cấu trúc thư mục. Nếu chỉ chép riêng file `index.html`, trang sẽ mất ảnh, logo và font.
@@ -156,9 +159,9 @@ Mở `index.html` bằng Notepad (nhấp phải › Open with › Notepad). Ph�
 |---|---|
 | Giờ khai mạc | Sửa dòng `EVENT_TIME = "2026-10-24T08:30:00+07:00"` |
 | Thêm, bớt, đổi thứ tự logo | Chép file PNG vào `logos/`, sửa danh sách `SPONSOR_LOGOS` (ghi tên file, không cần đuôi `.png`) |
-| Chữ số 3D cho mọi số | Đặt 10 file `so-0.png` … `so-9.png` (PNG nền trong suốt) vào `assets/`. Trang tự dùng khi có đủ ảnh cho các chữ số cần hiển thị |
-| Chữ 3D giờ/phút/giây | Đặt `gio.png`, `phut.png`, `giay.png` vào `assets/` |
-| Font SVN-Gilroy Black | Font có bản quyền, chưa kèm theo. Khi có file, đặt `SVN-Gilroy-Black.otf` vào `fonts/` hoặc cài lên máy. Khi chưa có, trang dùng Montserrat thay thế |
+| Kiểu chữ số 3D | Thay các file `so-0.png` … `so-9.png` trong `assets/` (PNG nền trong suốt, cùng khổ cho cả 10 số). Thiếu file nào thì trang tự dùng chữ thay thế cho số đó |
+| Chữ 3D ngày/giờ/phút/giây | Thay các file `ngay.png`, `gio.png`, `phut.png`, `giay.png` trong `assets/` |
+| Font chữ | Font nằm trong `fonts/`. Nếu thiếu `SVN-Gilroy-Black.otf`, trang tự dùng Montserrat thay thế |
 
 ## 8. Kiểm tra trước giờ trình chiếu
 
@@ -176,7 +179,7 @@ Mở `index.html` bằng Notepad (nhấp phải › Open with › Notepad). Ph�
 | Hiện tượng | Nguyên nhân thường gặp | Cách xử lý |
 |---|---|---|
 | Chỉ thấy nền xanh, mất logo hoặc ảnh | Chép thiếu thư mục con, hoặc mở file từ bên trong zip | Chép nguyên thư mục, giải nén trước khi mở |
-| Chữ hiển thị sai kiểu font | Thiếu thư mục `fonts/` | Kiểm tra `fonts/` có 2 file Montserrat `.ttf` |
+| Chữ hiển thị sai kiểu font | Thiếu thư mục `fonts/` | Kiểm tra `fonts/` có đủ `SVN-Gilroy-Black.otf` và 2 file Montserrat `.ttf` |
 | Số đếm lệch giờ thực tế | Đồng hồ hoặc múi giờ của máy sai | Làm lại [Bước 2](#bước-2-đồng-bộ-đồng-hồ-máy-tính) |
 | Trang đếm theo giờ diễn tập | Đường dẫn còn `?now=…` | Xóa phần `?now=…` trong đường dẫn hoặc shortcut |
 | Có viền đen hoặc dải xanh đậm ở mép | Độ phân giải xuất hình khác tỉ lệ màn LED | Làm lại [Bước 3](#bước-3-thiết-lập-xuất-hình-ra-màn-led) cùng kỹ thuật viên LED |
@@ -189,4 +192,4 @@ Mở `index.html` bằng Notepad (nhấp phải › Open with › Notepad). Ph�
 
 ---
 
-Font Montserrat được phân phối theo giấy phép [SIL Open Font License](fonts/OFL.txt). Hình ảnh và logo thuộc quyền sở hữu của Trường Đại học Sư phạm Thành phố Hồ Chí Minh và các đơn vị tài trợ, đồng hành.
+Font Montserrat được phân phối theo giấy phép [SIL Open Font License](fonts/OFL.txt). Font SVN-Gilroy Black là font thương mại, không kèm trong repo. Hình ảnh và logo thuộc quyền sở hữu của Trường Đại học Sư phạm Thành phố Hồ Chí Minh và các đơn vị tài trợ, đồng hành.

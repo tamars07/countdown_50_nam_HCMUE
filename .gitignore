@@ -1,3 +1,5 @@
 .DS_Store
 __MACOSX/
 *.zip
+# Font thương mại: chỉ có trong gói zip bàn giao, không đưa lên repo công khai
+fonts/SVN-Gilroy-Black.otf
