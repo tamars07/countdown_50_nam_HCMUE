@@ -27,15 +27,15 @@ Màn hình đếm ngược trình chiếu trên màn LED cho **Lễ kỉ niệm 
 | Hình thức | Trang web tĩnh (HTML) chạy trên Google Chrome hoặc Microsoft Edge |
 | Kết nối mạng | Không cần. Toàn bộ hình ảnh, logo và font chữ nằm sẵn trong thư mục |
 | Thời điểm đếm | 08g30 ngày 24/10/2026, tính theo giờ Việt Nam (UTC+7), không phụ thuộc múi giờ của máy |
-| Nguồn hình ảnh | Tách từ file thiết kế gốc `Countdown.ai` (ảnh nền, tòa nhà, chữ 3D, logo); bộ số 3D 0–9 và chữ giờ/phút/giây do designer cung cấp |
+| Nguồn hình ảnh | Ảnh nền màn hình đếm ngược và màn hình kỉ niệm (đã có logo Trường, tiêu đề, tòa nhà và dải logo tài trợ), bộ số 3D 0–9 và chữ giờ/phút/giây do designer cung cấp |
 
 ## 2. Nội dung thư mục
 
 | Thành phần | Mô tả |
 |---|---|
 | `index.html` | Trang trình chiếu. Đây là file cần mở |
-| `assets/` | Ảnh nền, hình tòa nhà, bộ số 3D `so-0.png` … `so-9.png`, chữ 3D "còn", "ngày", "giờ", "phút", "giây" |
-| `logos/` | Logo Trường, logo 50 năm và 26 logo đơn vị tài trợ, đánh số theo thứ tự hiển thị |
+| `assets/` | Ảnh nền `nen-dem-nguoc.jpg` (đếm ngược) và `nen-ki-niem.jpg` (từ giờ khai mạc), bộ số 3D `so-0.png` … `so-9.png`, chữ 3D "còn", "ngày", "giờ", "phút", "giây" |
+| `logos/` | Logo Trường, logo 50 năm và 26 logo đơn vị tài trợ dạng file rời để lưu trữ (trang dùng logo có sẵn trong ảnh nền) |
 | `fonts/` | Font SVN-Gilroy Black (tiêu đề, địa điểm) và Montserrat (các chữ còn lại) để chạy không cần mạng |
 | `docs/` | Ảnh chụp màn hình dùng trong tài liệu này |
 | `HUONG-DAN-TRIEN-KHAI.docx` | Bản Word của tài liệu này |
@@ -130,7 +130,7 @@ Bốn ô Ngày, Giờ, Phút, Giây bên phải đếm ngược chính xác. S�
 | Trước ngày 24/10/2026 | "còn N ngày", N tính theo **ngày lịch**: 22/10 hiện "còn 2 ngày", 9g ngày 23/10 vẫn hiện "còn 1 ngày" dù đồng hồ chỉ còn 0 ngày 23 giờ 30 phút |
 | Từ 00g00 ngày 24/10/2026 | "còn N giờ" (N = ô Giờ) |
 | Ngày 24/10, ô Giờ = 0 | "còn N phút" (N = ô Phút) |
-| Ngày 24/10, ô Giờ, Phút = 0 | "còn N giây", số nhảy theo từng giây |
+| Ngày 24/10, ô Giờ, Phút = 0 | "còn N giây", số nhảy theo từng giây; 4 ô Ngày, Giờ, Phút, Giây ẩn đi, chỉ còn số giây lớn |
 | Từ 08g30 ngày 24/10/2026 | Màn hình kỉ niệm: logo Trường, logo 50 năm, "Kỉ niệm 50 năm Ngày truyền thống" và "(27/10/1976 - 27/10/2026)". Dải logo tài trợ giữ nguyên |
 
 ![Màn hình tự chuyển sang màn hình kỉ niệm khi đến giờ khai mạc](docs/man-hinh-chao-mung.jpg)
@@ -161,7 +161,7 @@ Mở `index.html` bằng Notepad (nhấp phải › Open with › Notepad). Ph�
 | Muốn thay đổi | Cách làm |
 |---|---|
 | Giờ khai mạc | Sửa dòng `EVENT_TIME = "2026-10-24T08:30:00+07:00"` |
-| Thêm, bớt, đổi thứ tự logo | Chép file PNG vào `logos/`, sửa danh sách `SPONSOR_LOGOS` (ghi tên file, không cần đuôi `.png`) |
+| Logo tài trợ, tiêu đề, logo Trường | Nằm sẵn trong 2 ảnh nền `assets/nen-dem-nguoc.jpg` và `assets/nen-ki-niem.jpg`. Muốn đổi thì nhờ designer xuất lại ảnh nền cùng tỉ lệ 13:7 (tốt nhất đúng 2080 × 1120), đặt cùng tên đè lên file cũ |
 | Kiểu chữ số 3D | Thay các file `so-0.png` … `so-9.png` trong `assets/` (PNG nền trong suốt, cùng khổ cho cả 10 số). Thiếu file nào thì trang tự dùng chữ thay thế cho số đó |
 | Chữ 3D ngày/giờ/phút/giây | Thay các file `ngay.png`, `gio.png`, `phut.png`, `giay.png` trong `assets/` |
 | Font chữ | Font nằm trong `fonts/`. Nếu thiếu `SVN-Gilroy-Black.otf`, trang tự dùng Montserrat thay thế |

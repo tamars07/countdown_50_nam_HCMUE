@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Countdown 50 năm HCMUE</title>
 <style>
-/* Khung ngang 2080x1120 = đúng tỉ lệ màn LED 4160x2240mm (13:7). Hình ảnh lấy từ file thiết kế Countdown.ai. Chạy offline: font nằm trong fonts/. */
+/* Khung ngang 2080x1120 = đúng tỉ lệ màn LED 4160x2240mm (13:7). Ảnh nền nen-dem-nguoc.jpg (đếm ngược) và nen-ki-niem.jpg (từ giờ khai mạc) do designer xuất, đã có logo, tiêu đề, tòa nhà, dải tài trợ. Chạy offline: font nằm trong fonts/. */
 @font-face {
   font-family: "Montserrat";
   src: url("fonts/Montserrat-VF.ttf") format("truetype");
@@ -44,30 +44,11 @@ body.idle { cursor: none; }
   position: absolute; left: 50%; top: 50%;
   width: 2080px; height: 1120px;
   overflow: hidden;
-  background: var(--navy);
+  /* ảnh nền thiết kế, cùng tỉ lệ 13:7 nên phủ kín khung không méo */
+  background: var(--navy) url("assets/nen-dem-nguoc.jpg") 0 0 / 100% 100% no-repeat;
 }
-.bg {
-  position: absolute; left: 0; top: 0; width: 2080px; height: 880px;
-  background: url("assets/bg.jpg") center bottom / cover no-repeat;
-}
-.building {
-  /* bậc thềm tòa nhà đặt trên điểm hội tụ vệt sáng: bg.jpg (825,805) x1.3, lệch -290 → (1072,756) */
-  position: absolute; left: 1072px; bottom: 348px; width: 1000px;
-  transform: translateX(-50%);
-  opacity: .9;
-}
-
-/* header */
-.logo-l { position: absolute; left: 50px; top: 30px; height: 150px; }
-.logo-r { position: absolute; right: 50px; top: 26px; height: 144px; }
-.titles {
-  position: absolute; left: 0; right: 0; top: 128px;
-  text-align: center; text-transform: uppercase; white-space: nowrap;
-  font-family: var(--gilroy); font-weight: 900;
-  text-shadow: 0 3px 12px rgba(0,10,80,.55);
-}
-.titles .l1 { font-size: 54px; line-height: 1.2; }
-.titles .l2 { font-size: 49px; line-height: 1.2; color: var(--gold); }
+/* từ giờ khai mạc: đổi sang ảnh nền màn hình kỉ niệm (đã có logo, tiêu đề, tòa nhà, dải tài trợ) */
+body.is-live #stage { background-image: url("assets/nen-ki-niem.jpg"); }
 
 /* cột trái: còn / số / đơn vị */
 .hero { position: absolute; left: 30px; top: 250px; width: 1040px; height: 690px; }
@@ -114,6 +95,8 @@ body.idle { cursor: none; }
   text-align: center;
 }
 .clock { display: flex; gap: 22px; }
+/* dưới 60 giây: ẩn 4 ô đếm, chỉ còn số giây lớn; giữ chỗ để địa điểm, khẩu hiệu không bị xê dịch */
+.clock.off { visibility: hidden; }
 .cell {
   width: 200px; padding: 14px 0 10px;
   border-radius: 22px;
@@ -143,41 +126,6 @@ body.idle { cursor: none; }
   white-space: nowrap;
 }
 
-/* tài trợ */
-.sponsors {
-  position: absolute; left: 0; right: 0; bottom: 0; height: 240px;
-  background: var(--paper); color: var(--ink);
-  padding: 14px 44px 16px;
-  display: flex; flex-direction: column; gap: 8px;
-}
-.sponsors h3 { margin: 0; font: 800 34px/1.2 var(--mont); text-wrap: balance; }
-.logos {
-  flex: 1; min-height: 0;
-  display: flex; flex-wrap: wrap; align-content: space-evenly; justify-content: space-between;
-  column-gap: 18px;
-}
-.logos img { height: 74px; max-width: 168px; object-fit: contain; }
-
-/* sau giờ khai mạc */
-/* bố cục theo thiết kế "KI NIEM-01": logo trường giữa, logo 50 năm + tiêu đề, tòa nhà bên dưới */
-body.is-live .logo-l, body.is-live .logo-r, body.is-live .titles { display: none; }
-body.is-live .building { opacity: .35; }
-.live-logo { position: absolute; left: 50%; top: 22px; height: 150px; transform: translateX(-50%); }
-.live-row {
-  position: absolute; left: 0; right: 0; top: 440px; transform: translateY(-50%);
-  display: flex; align-items: center; justify-content: center; gap: 44px;
-}
-.live-50 { position: relative; flex: none; }
-.live-50 img { height: 272px; display: block; }
-.live-50 span {
-  position: absolute; right: -8px; top: -14px;
-  font: 900 38px/1 var(--gilroy); color: var(--ice);
-}
-.live-text { font-family: var(--gilroy); font-weight: 900; text-transform: uppercase; white-space: nowrap; text-shadow: 0 4px 16px rgba(0,10,70,.55); }
-.live-text .k1 { font-size: 86px; line-height: 1.04; }
-.live-text .k2 { font-size: 45px; line-height: 1.35; color: var(--gold); margin-top: 6px; }
-.live-text .k3 { font-size: 40px; line-height: 1.2; text-transform: none; font-variant-numeric: tabular-nums; }
-
 .hint {
   position: fixed; right: 12px; bottom: 12px; z-index: 5;
   font: 600 13px var(--mont); color: rgba(255,255,255,.8);
@@ -191,16 +139,6 @@ body.idle .hint { opacity: 0; }
 </head>
 <body>
 <div id="stage">
-  <div class="bg"></div>
-  <img class="building" id="building" src="assets/building.png" alt="">
-
-  <img class="logo-l" src="logos/hcmue.png" alt="Trường ĐHSP TP.HCM">
-  <img class="logo-r" src="logos/50nam.png" alt="50 năm HCMUE">
-  <div class="titles">
-    <div class="l1">Lễ kỉ niệm 50 năm Ngày truyền thống</div>
-    <div class="l2">Trường Đại học Sư phạm Thành phố Hồ Chí Minh</div>
-  </div>
-
   <section class="hero" id="hero">
     <img class="con" src="assets/chu-con.png" alt="còn">
     <div class="num" id="num"></div>
@@ -223,24 +161,6 @@ body.idle .hint { opacity: 0; }
       <div class="s2">Tự hào truyền thống, kiến tạo tương lai</div>
     </div>
   </section>
-
-  <section class="live" id="live" hidden>
-    <img class="live-logo" src="logos/hcmue.png" alt="Trường ĐHSP TP.HCM">
-    <div class="live-row">
-      <div class="live-50"><img src="logos/50nam.png" alt="50 năm HCMUE"><span>NĂM</span></div>
-      <div class="live-text">
-        <div class="k1">Kỉ niệm 50 năm</div>
-        <div class="k1">Ngày truyền thống</div>
-        <div class="k2">Trường Đại học Sư phạm Thành phố Hồ Chí Minh</div>
-        <div class="k3">(27/10/1976 - 27/10/2026)</div>
-      </div>
-    </div>
-  </section>
-
-  <footer class="sponsors">
-    <h3>Các&nbsp;đơn&nbsp;vị tài&nbsp;trợ, đồng&nbsp;hành</h3>
-    <div class="logos" id="logos"></div>
-  </footer>
 </div>
 <div class="hint">Nhấn F hoặc nhấp chuột để toàn màn hình</div>
 
@@ -248,15 +168,6 @@ body.idle .hint { opacity: 0; }
 // ===== CẤU HÌNH =====
 // Giờ khai mạc tính theo giờ Việt Nam (UTC+7), không phụ thuộc múi giờ của máy chiếu.
 const EVENT_TIME = "2026-10-24T08:30:00+07:00";
-
-// Logo tài trợ trong thư mục logos/, theo thứ tự hiển thị.
-const SPONSOR_LOGOS = [
-  "01-pvcombank", "02-vietinbank", "03-agribank", "04-vietcombank", "05-the-cocoon",
-  "06-flcenter", "07-saomai", "08-trung-tam", "09-cd-sai-gon", "10-phu-tho",
-  "11-truong-sa-group", "12-ktc", "13-dlcorp", "14-bitex", "15-igroup", "16-sp-home",
-  "17-kingtek", "18-ctihsk", "19-sejong", "20-kit", "21-weset", "22-acsa",
-  "23-nam-viet", "24-cd-binh-duong", "25-khanh-travel", "26-vuong-mien",
-].map(n => `logos/${n}.png`);
 
 // Chữ số và đơn vị dạng ảnh 3D (xuất từ AI). Thiếu file nào thì tự dùng chữ CSS thay thế.
 const DIGIT_IMG = d => `assets/so-${d}.png`;
@@ -283,13 +194,6 @@ function fit() {
 addEventListener("resize", fit);
 fit();
 
-for (const src of SPONSOR_LOGOS) {
-  const img = new Image();
-  img.src = src; img.alt = "";
-  img.onerror = () => img.remove();
-  $("logos").append(img);
-}
-
 // nạp sẵn ảnh chữ số / đơn vị, chỉ dùng những ảnh có thật
 const ok = new Set();
 let lastKey = null;
@@ -300,6 +204,8 @@ function probe(src) {
 }
 for (let d = 0; d <= 9; d++) probe(DIGIT_IMG(d));
 Object.values(UNIT_IMG).forEach(probe);
+// nạp sẵn ảnh nền màn hình kỉ niệm để lúc 08g30 chuyển cảnh ngay, không bị trễ
+new Image().src = "assets/nen-ki-niem.jpg";
 
 function el(tag, cls, text) {
   const e = document.createElement(tag);
@@ -330,10 +236,10 @@ function tick() {
   const done = diff <= 0;
   $("hero").hidden = done;
   $("side").hidden = done;
-  $("live").hidden = !done;
   document.body.classList.toggle("is-live", done);
   if (!done) {
     const t = Math.floor(diff / 1000);
+    document.querySelector(".clock").classList.toggle("off", t < 60);
     const d = Math.floor(t / 86400), h = Math.floor(t % 86400 / 3600),
           m = Math.floor(t % 3600 / 60), s = t % 60;
     $("cd").textContent = pad(d); $("ch").textContent = pad(h);
