@@ -339,8 +339,10 @@ function tick() {
     $("cd").textContent = pad(d); $("ch").textContent = pad(h);
     $("cm").textContent = pad(m); $("cs").textContent = pad(s);
 
+    // chưa tới ngày sự kiện thì đếm theo ngày lịch; đúng ngày sự kiện mới chuyển sang giờ/phút/giây
+    const days = vnDay(target) - vnDay(now);
     let big, unit;
-    if (d > 0) { big = vnDay(target) - vnDay(now); unit = "ngày"; }
+    if (days > 0) { big = days; unit = "ngày"; }
     else if (h > 0) { big = h; unit = "giờ"; }
     else if (m > 0) { big = m; unit = "phút"; }
     else { big = s; unit = "giây"; }

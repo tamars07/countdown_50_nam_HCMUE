@@ -123,14 +123,14 @@ Nếu máy dùng Microsoft Edge:
 
 ## 5. Diễn biến hiển thị
 
-Bốn ô Ngày, Giờ, Phút, Giây bên phải đếm ngược chính xác. Số lớn bên trái đổi đơn vị theo các ô này: ô Ngày về 0 thì chuyển sang giờ, ô Giờ về 0 thì chuyển sang phút, ô Phút về 0 thì chuyển sang giây.
+Bốn ô Ngày, Giờ, Phút, Giây bên phải đếm ngược chính xác. Số lớn bên trái tính theo ngày lịch cho đến hết ngày 23/10. Từ 00g00 ngày 24/10 mới đổi đơn vị theo các ô: hiện số giờ, ô Giờ về 0 thì chuyển sang phút, ô Phút về 0 thì chuyển sang giây.
 
 | Thời gian còn lại | Nội dung hiển thị |
 |---|---|
-| Ô Ngày từ 1 trở lên | "còn N ngày", N tính theo **ngày lịch**: hôm nay 22/10 thì hiện "còn 2 ngày" dù đồng hồ còn 1 ngày 12 giờ |
-| Ô Ngày = 0 | "còn N giờ" (N = ô Giờ) |
-| Ô Ngày, Giờ = 0 | "còn N phút" (N = ô Phút) |
-| Ô Ngày, Giờ, Phút = 0 | "còn N giây", số nhảy theo từng giây |
+| Trước ngày 24/10/2026 | "còn N ngày", N tính theo **ngày lịch**: 22/10 hiện "còn 2 ngày", 9g ngày 23/10 vẫn hiện "còn 1 ngày" dù đồng hồ chỉ còn 0 ngày 23 giờ 30 phút |
+| Từ 00g00 ngày 24/10/2026 | "còn N giờ" (N = ô Giờ) |
+| Ngày 24/10, ô Giờ = 0 | "còn N phút" (N = ô Phút) |
+| Ngày 24/10, ô Giờ, Phút = 0 | "còn N giây", số nhảy theo từng giây |
 | Từ 08g30 ngày 24/10/2026 | Màn hình kỉ niệm: logo Trường, logo 50 năm, "Kỉ niệm 50 năm Ngày truyền thống" và "(27/10/1976 - 27/10/2026)". Dải logo tài trợ giữ nguyên |
 
 ![Màn hình tự chuyển sang màn hình kỉ niệm khi đến giờ khai mạc](docs/man-hinh-chao-mung.jpg)
@@ -141,7 +141,7 @@ Có thể giả lập giờ hiện tại để xem trước các cảnh chuyển
 
 | Muốn xem | Thêm vào sau `index.html` |
 |---|---|
-| Chuyển từ "ngày" sang "giờ" | `?now=2026-10-23T08:29:50%2B07:00` |
+| Chuyển từ "ngày" sang "giờ" | `?now=2026-10-23T23:59:50%2B07:00` |
 | Chuyển từ "giờ" sang "phút" | `?now=2026-10-24T07:29:50%2B07:00` |
 | Chuyển từ "phút" sang "giây" | `?now=2026-10-24T08:28:50%2B07:00` |
 | 10 giây cuối và màn hình kỉ niệm | `?now=2026-10-24T08:29:50%2B07:00` |
