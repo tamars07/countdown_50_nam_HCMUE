@@ -123,17 +123,17 @@ Nếu máy dùng Microsoft Edge:
 
 ## 5. Diễn biến hiển thị
 
-Số lớn bên trái tự đổi đơn vị theo thời gian còn lại. Bốn ô Ngày, Giờ, Phút, Giây bên phải luôn chạy liên tục.
+Bốn ô Ngày, Giờ, Phút, Giây bên phải đếm ngược chính xác. Số lớn bên trái đổi đơn vị theo các ô này: ô Ngày về 0 thì chuyển sang giờ, ô Giờ về 0 thì chuyển sang phút, ô Phút về 0 thì chuyển sang giây.
 
 | Thời gian còn lại | Nội dung hiển thị |
 |---|---|
-| Từ 1 ngày trở lên | "còn N ngày" (ví dụ: còn 3 ngày) |
-| Dưới 1 ngày | "còn N giờ" |
-| Dưới 1 giờ | "còn N phút" |
-| Dưới 1 phút | "còn N giây", số nhảy theo từng giây |
-| Từ 08g30 ngày 24/10/2026 | "Chào mừng quý vị đại biểu" và "Lễ kỉ niệm 50 năm Ngày truyền thống đang diễn ra" |
+| Ô Ngày từ 1 trở lên | "còn N ngày", N tính theo **ngày lịch**: hôm nay 22/10 thì hiện "còn 2 ngày" dù đồng hồ còn 1 ngày 12 giờ |
+| Ô Ngày = 0 | "còn N giờ" (N = ô Giờ) |
+| Ô Ngày, Giờ = 0 | "còn N phút" (N = ô Phút) |
+| Ô Ngày, Giờ, Phút = 0 | "còn N giây", số nhảy theo từng giây |
+| Từ 08g30 ngày 24/10/2026 | Màn hình kỉ niệm: logo Trường, logo 50 năm, "Kỉ niệm 50 năm Ngày truyền thống" và "(27/10/1976 - 27/10/2026)". Dải logo tài trợ giữ nguyên |
 
-![Màn hình tự chuyển sang lời chào khi đến giờ khai mạc](docs/man-hinh-chao-mung.jpg)
+![Màn hình tự chuyển sang màn hình kỉ niệm khi đến giờ khai mạc](docs/man-hinh-chao-mung.jpg)
 
 ## 6. Diễn tập trước sự kiện
 
@@ -144,9 +144,12 @@ Có thể giả lập giờ hiện tại để xem trước các cảnh chuyển
 | Chuyển từ "ngày" sang "giờ" | `?now=2026-10-23T08:29:50%2B07:00` |
 | Chuyển từ "giờ" sang "phút" | `?now=2026-10-24T07:29:50%2B07:00` |
 | Chuyển từ "phút" sang "giây" | `?now=2026-10-24T08:28:50%2B07:00` |
-| 10 giây cuối và lời chào | `?now=2026-10-24T08:29:50%2B07:00` |
+| 10 giây cuối và màn hình kỉ niệm | `?now=2026-10-24T08:29:50%2B07:00` |
+| Ảnh tĩnh "còn 2 ngày", đồng hồ đứng ở 01:12:00:00 | `?now=2026-10-22T20:30:00%2B07:00&freeze` |
 
 Ví dụ: `file:///D:/countdown-50nam/index.html?now=2026-10-24T08:29:50%2B07:00`
+
+Thêm `&freeze` để màn hình đứng yên tại đúng thời điểm `now`, tiện chụp ảnh giới thiệu.
 
 > [!CAUTION]
 > Diễn tập xong phải xóa phần `?now=…` khỏi đường dẫn hoặc shortcut. Nếu không, trang sẽ đếm theo giờ giả lập chứ không theo giờ thật.

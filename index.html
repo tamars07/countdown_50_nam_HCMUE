@@ -58,7 +58,7 @@ body.idle { cursor: none; }
 }
 
 /* header */
-.logo-l { position: absolute; left: 50px; top: 34px; height: 128px; }
+.logo-l { position: absolute; left: 50px; top: 30px; height: 150px; }
 .logo-r { position: absolute; right: 50px; top: 26px; height: 144px; }
 .titles {
   position: absolute; left: 0; right: 0; top: 128px;
@@ -159,16 +159,24 @@ body.idle { cursor: none; }
 .logos img { height: 74px; max-width: 168px; object-fit: contain; }
 
 /* sau giờ khai mạc */
-.live {
-  position: absolute; left: 0; right: 0; top: 200px; height: 680px;
-  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 36px;
-  text-align: center;
+/* bố cục theo thiết kế "KI NIEM-01": logo trường giữa, logo 50 năm + tiêu đề, tòa nhà bên dưới */
+body.is-live .logo-l, body.is-live .logo-r, body.is-live .titles { display: none; }
+body.is-live .building { opacity: .35; }
+.live-logo { position: absolute; left: 50%; top: 22px; height: 150px; transform: translateX(-50%); }
+.live-row {
+  position: absolute; left: 0; right: 0; top: 440px; transform: translateY(-50%);
+  display: flex; align-items: center; justify-content: center; gap: 44px;
 }
-.live .big {
-  font: italic 900 170px/1.05 var(--mont); color: var(--ice);
-  text-shadow: 0 4px 0 #6fb2ff, 0 9px 0 #1a45c4, 0 0 60px rgba(89,214,255,.6);
+.live-50 { position: relative; flex: none; }
+.live-50 img { height: 272px; display: block; }
+.live-50 span {
+  position: absolute; right: -8px; top: -14px;
+  font: 900 38px/1 var(--gilroy); color: var(--ice);
 }
-.live .sub { font: 900 60px/1.2 var(--gilroy); color: var(--gold); text-transform: uppercase; }
+.live-text { font-family: var(--gilroy); font-weight: 900; text-transform: uppercase; white-space: nowrap; text-shadow: 0 4px 16px rgba(0,10,70,.55); }
+.live-text .k1 { font-size: 86px; line-height: 1.04; }
+.live-text .k2 { font-size: 45px; line-height: 1.35; color: var(--gold); margin-top: 6px; }
+.live-text .k3 { font-size: 40px; line-height: 1.2; text-transform: none; font-variant-numeric: tabular-nums; }
 
 .hint {
   position: fixed; right: 12px; bottom: 12px; z-index: 5;
@@ -217,8 +225,16 @@ body.idle .hint { opacity: 0; }
   </section>
 
   <section class="live" id="live" hidden>
-    <div class="big">Chào&nbsp;mừng<br>quý&nbsp;vị&nbsp;đại&nbsp;biểu</div>
-    <div class="sub">Lễ kỉ niệm 50 năm Ngày truyền thống đang diễn&nbsp;ra</div>
+    <img class="live-logo" src="logos/hcmue.png" alt="Trường ĐHSP TP.HCM">
+    <div class="live-row">
+      <div class="live-50"><img src="logos/50nam.png" alt="50 năm HCMUE"><span>NĂM</span></div>
+      <div class="live-text">
+        <div class="k1">Kỉ niệm 50 năm</div>
+        <div class="k1">Ngày truyền thống</div>
+        <div class="k2">Trường Đại học Sư phạm Thành phố Hồ Chí Minh</div>
+        <div class="k3">(27/10/1976 - 27/10/2026)</div>
+      </div>
+    </div>
   </section>
 
   <footer class="sponsors">
@@ -250,8 +266,12 @@ const UNIT_IMG = { "ngày": "assets/ngay.png", "giờ": "assets/gio.png", "phút
 const W = 2080, H = 1120;
 const params = new URLSearchParams(location.search);
 const target = Date.parse(params.get("target") || EVENT_TIME);
-// ?now=2026-10-24T08:29:50%2B07:00 để diễn tập chuyển cảnh
+// ?now=2026-10-24T08:29:50%2B07:00 để diễn tập chuyển cảnh; thêm &freeze để đứng hình tại đúng thời điểm đó
 const offset = params.get("now") ? Date.parse(params.get("now")) - Date.now() : 0;
+const fixedNow = params.has("freeze") && params.get("now") ? Date.parse(params.get("now")) : null;
+const nowMs = () => fixedNow ?? Date.now() + offset;
+// số ngày theo lịch, tính theo giờ Việt Nam (UTC+7)
+const vnDay = ms => Math.floor((ms + 7 * 3600 * 1000) / 86400000);
 
 const $ = id => document.getElementById(id);
 const pad = n => String(n).padStart(2, "0");
@@ -305,12 +325,13 @@ function renderBig(big, unit) {
 }
 
 function tick() {
-  const diff = target - (Date.now() + offset);
+  const now = nowMs();
+  const diff = target - now;
   const done = diff <= 0;
   $("hero").hidden = done;
   $("side").hidden = done;
-  $("building").hidden = done;
   $("live").hidden = !done;
+  document.body.classList.toggle("is-live", done);
   if (!done) {
     const t = Math.floor(diff / 1000);
     const d = Math.floor(t / 86400), h = Math.floor(t % 86400 / 3600),
@@ -319,7 +340,7 @@ function tick() {
     $("cm").textContent = pad(m); $("cs").textContent = pad(s);
 
     let big, unit;
-    if (d > 0) { big = d; unit = "ngày"; }
+    if (d > 0) { big = vnDay(target) - vnDay(now); unit = "ngày"; }
     else if (h > 0) { big = h; unit = "giờ"; }
     else if (m > 0) { big = m; unit = "phút"; }
     else { big = s; unit = "giây"; }
@@ -327,9 +348,10 @@ function tick() {
     const key = big + unit;
     if (key !== lastKey) { renderBig(big, unit); lastKey = key; }
   }
-  setTimeout(tick, 1000 - ((Date.now() + offset) % 1000) + 5);
+  setTimeout(tick, 1000 - (now % 1000) + 5);
 }
 tick();
+if (fixedNow !== null) document.querySelector(".hint").hidden = true;
 
 // Toàn màn hình, giữ màn hình luôn sáng, ẩn chuột khi không dùng
 function goFull() {
