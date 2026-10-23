@@ -91,7 +91,7 @@ git clone https://github.com/tamars07/countdown_50_nam_HCMUE.git countdown-50nam
 3. Nếu dùng thêm một màn hình để điều khiển, chọn chế độ **Extend** và kéo cửa sổ trình duyệt sang màn LED trước khi bật toàn màn hình. Hoặc chọn **Show only on 2** để chỉ xuất ra màn LED.
 
 > [!TIP]
-> Khi không đặt được độ phân giải riêng: dùng 1920 × 1080 và để bộ điều khiển co hình vừa màn. Trang vẫn hiển thị đầy đủ nhưng có thể có dải màu xanh đậm mỏng ở mép trên và dưới, hoặc hình bị kéo giãn nhẹ khoảng 4%.
+> Khi không đặt được độ phân giải riêng: dùng 1920 × 1080 và để bộ điều khiển trải hình ra toàn màn LED. Trang tự kéo giãn phủ kín khung 16:9 (co ngang khoảng 4%), bộ điều khiển giãn ngang trở lại nên trên màn LED hình đúng tỉ lệ, không có viền. Trang chỉ tự phủ kín khi tỉ lệ màn hình lệch dưới 8% so với 13:7; có thể ép chế độ bằng `?fit=fill` (luôn phủ kín), `?fit=contain` (giữ tỉ lệ, có viền) hoặc `?fit=cover` (phủ kín, cắt bớt mép).
 
 ### Bước 4. Tắt các tính năng gây gián đoạn
 
@@ -135,6 +135,8 @@ Bốn ô Ngày, Giờ, Phút, Giây bên phải đếm ngược chính xác. S�
 
 ![Màn hình tự chuyển sang màn hình kỉ niệm khi đến giờ khai mạc](docs/man-hinh-chao-mung.jpg)
 
+**Chiếu xen kẽ ảnh Hội thảo (đến hết ngày 23/10/2026):** cứ 60 giây đếm ngược thì chuyển sang 30 giây ảnh giới thiệu Hội thảo khoa học cán bộ trẻ các trường ĐHSP lần thứ XI (`assets/nen-hoi-thao.png`), chuyển cảnh mờ dần, lặp lại liên tục. Chu kỳ 90 giây bám theo đồng hồ nên nhiều màn hình chạy cùng lúc sẽ chuyển cảnh đồng loạt. Từ 00g00 ngày 24/10 trang tự thôi chiếu ảnh Hội thảo, chỉ còn đếm ngược.
+
 ## 6. Diễn tập trước sự kiện
 
 Có thể giả lập giờ hiện tại để xem trước các cảnh chuyển. Thêm `?now=…` vào sau `index.html` trong đường dẫn mở trang (hoặc trong lệnh kiosk). Ký hiệu `%2B` là dấu cộng của múi giờ `+07:00`.
@@ -146,6 +148,8 @@ Có thể giả lập giờ hiện tại để xem trước các cảnh chuyển
 | Chuyển từ "phút" sang "giây" | `?now=2026-10-24T08:28:50%2B07:00` |
 | 10 giây cuối và màn hình kỉ niệm | `?now=2026-10-24T08:29:50%2B07:00` |
 | Ảnh tĩnh "còn 2 ngày", đồng hồ đứng ở 01:12:00:00 | `?now=2026-10-22T20:30:00%2B07:00&freeze` |
+| Lượt đếm ngược rồi chuyển sang ảnh Hội thảo | `?now=2026-10-23T14:00:55%2B07:00` |
+| Hết ngày 23/10, thôi chiếu ảnh Hội thảo | `?now=2026-10-23T23:59:50%2B07:00` |
 
 Ví dụ: `file:///D:/countdown-50nam/index.html?now=2026-10-24T08:29:50%2B07:00`
 
@@ -161,6 +165,7 @@ Mở `index.html` bằng Notepad (nhấp phải › Open with › Notepad). Ph�
 | Muốn thay đổi | Cách làm |
 |---|---|
 | Giờ khai mạc | Sửa dòng `EVENT_TIME = "2026-10-24T08:30:00+07:00"` |
+| Chiếu xen kẽ ảnh Hội thảo | Sửa khối `ROTATE`: `src` (ảnh, tỉ lệ 13:7), `until` (thời điểm thôi chiếu xen kẽ), `countdownSec` (số giây đếm ngược), `slideSec` (số giây chiếu ảnh). Muốn tắt hẳn thì đặt `until` là thời điểm đã qua |
 | Logo tài trợ, tiêu đề, logo Trường | Nằm sẵn trong 2 ảnh nền `assets/nen-dem-nguoc.jpg` và `assets/nen-ki-niem.jpg`. Muốn đổi thì nhờ designer xuất lại ảnh nền cùng tỉ lệ 13:7 (tốt nhất đúng 2080 × 1120), đặt cùng tên đè lên file cũ |
 | Kiểu chữ số 3D | Thay các file `so-0.png` … `so-9.png` trong `assets/` (PNG nền trong suốt, cùng khổ cho cả 10 số). Thiếu file nào thì trang tự dùng chữ thay thế cho số đó |
 | Chữ 3D ngày/giờ/phút/giây | Thay các file `ngay.png`, `gio.png`, `phut.png`, `giay.png` trong `assets/` |
@@ -185,7 +190,7 @@ Mở `index.html` bằng Notepad (nhấp phải › Open with › Notepad). Ph�
 | Chữ hiển thị sai kiểu font | Thiếu thư mục `fonts/` | Kiểm tra `fonts/` có đủ `SVN-Gilroy-Black.otf` và 2 file Montserrat `.ttf` |
 | Số đếm lệch giờ thực tế | Đồng hồ hoặc múi giờ của máy sai | Làm lại [Bước 2](#bước-2-đồng-bộ-đồng-hồ-máy-tính) |
 | Trang đếm theo giờ diễn tập | Đường dẫn còn `?now=…` | Xóa phần `?now=…` trong đường dẫn hoặc shortcut |
-| Có viền đen hoặc dải xanh đậm ở mép | Độ phân giải xuất hình khác tỉ lệ màn LED | Làm lại [Bước 3](#bước-3-thiết-lập-xuất-hình-ra-màn-led) cùng kỹ thuật viên LED |
+| Có viền đen hoặc dải xanh đậm ở mép | Độ phân giải xuất hình lệch nhiều so với tỉ lệ màn LED | Thêm `?fit=fill` vào đường dẫn để ép phủ kín, hoặc làm lại [Bước 3](#bước-3-thiết-lập-xuất-hình-ra-màn-led) cùng kỹ thuật viên LED |
 | Hình bị kéo méo | Bộ điều khiển kéo giãn hình không giữ tỉ lệ | Đặt đúng độ phân giải đầu vào theo màn LED |
 | Còn thanh địa chỉ hoặc tab | Chưa vào toàn màn hình | Nhấn **F** (hoặc **F11**), hoặc mở bằng shortcut kiosk |
 | Lệnh kiosk không có tác dụng | Chrome đang chạy sẵn với hồ sơ khác | Đóng hết Chrome hoặc giữ tham số `--user-data-dir` |

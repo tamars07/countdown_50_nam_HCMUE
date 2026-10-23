@@ -126,6 +126,13 @@ body.is-live #stage { background-image: url("assets/nen-ki-niem.jpg"); }
   white-space: nowrap;
 }
 
+/* ảnh giới thiệu hội thảo chiếu xen kẽ, phủ toàn khung */
+.slide {
+  position: absolute; inset: 0; width: 100%; height: 100%; z-index: 10;
+  opacity: 0; transition: opacity .8s ease; pointer-events: none;
+}
+.slide.on { opacity: 1; }
+
 .hint {
   position: fixed; right: 12px; bottom: 12px; z-index: 5;
   font: 600 13px var(--mont); color: rgba(255,255,255,.8);
@@ -134,7 +141,7 @@ body.is-live #stage { background-image: url("assets/nen-ki-niem.jpg"); }
 }
 body.idle .hint { opacity: 0; }
 
-@media (prefers-reduced-motion: reduce) { .pop { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .pop { animation: none; } .slide { transition: none; } }
 </style>
 </head>
 <body>
@@ -161,6 +168,8 @@ body.idle .hint { opacity: 0; }
       <div class="s2">Tự hào truyền thống, kiến tạo tương lai</div>
     </div>
   </section>
+
+  <img class="slide" id="slide" alt="Hội thảo khoa học cán bộ trẻ các trường đại học sư phạm lần thứ XI">
 </div>
 <div class="hint">Nhấn F hoặc nhấp chuột để toàn màn hình</div>
 
@@ -172,6 +181,15 @@ const EVENT_TIME = "2026-10-24T08:30:00+07:00";
 // Chữ số và đơn vị dạng ảnh 3D (xuất từ AI). Thiếu file nào thì tự dùng chữ CSS thay thế.
 const DIGIT_IMG = d => `assets/so-${d}.png`;
 const UNIT_IMG = { "ngày": "assets/ngay.png", "giờ": "assets/gio.png", "phút": "assets/phut.png", "giây": "assets/giay.png" };
+
+// Chiếu xen kẽ ảnh giới thiệu hội thảo: đếm ngược 60 giây rồi ảnh 30 giây, lặp lại đến thời điểm "until".
+// Từ "until" trở đi chỉ chiếu đếm ngược. Muốn tắt hẳn thì đặt until là một thời điểm đã qua.
+const ROTATE = {
+  src: "assets/nen-hoi-thao.png",
+  until: "2026-10-24T00:00:00+07:00",
+  countdownSec: 60,
+  slideSec: 30,
+};
 // =====================
 
 const W = 2080, H = 1120;
@@ -187,9 +205,16 @@ const vnDay = ms => Math.floor((ms + 7 * 3600 * 1000) / 86400000);
 const $ = id => document.getElementById(id);
 const pad = n => String(n).padStart(2, "0");
 
+// Khớp khung 2080x1120 vào cửa sổ. Mặc định "auto": tỉ lệ màn hình lệch dưới 8% so với 13:7 (vd. máy xuất 16:9
+// cho màn LED) thì kéo giãn phủ kín, không chừa viền; lệch nhiều (điện thoại, laptop) thì giữ tỉ lệ.
+// Ép chế độ bằng ?fit=fill (luôn phủ kín, có thể méo), ?fit=contain (giữ tỉ lệ, có viền), ?fit=cover (phủ kín, cắt mép).
+const FIT = params.get("fit") || "auto";
 function fit() {
-  const s = Math.min(innerWidth / W, innerHeight / H);
-  $("stage").style.transform = `translate(-50%, -50%) scale(${s})`;
+  const sx = innerWidth / W, sy = innerHeight / H;
+  const mode = FIT === "auto" ? (Math.abs(sx / sy - 1) <= 0.08 ? "fill" : "contain") : FIT;
+  const s = mode === "cover" ? Math.max(sx, sy) : Math.min(sx, sy);
+  const [x, y] = mode === "fill" ? [sx, sy] : [s, s];
+  $("stage").style.transform = `translate(-50%, -50%) scale(${x}, ${y})`;
 }
 addEventListener("resize", fit);
 fit();
@@ -206,6 +231,14 @@ for (let d = 0; d <= 9; d++) probe(DIGIT_IMG(d));
 Object.values(UNIT_IMG).forEach(probe);
 // nạp sẵn ảnh nền màn hình kỉ niệm để lúc 08g30 chuyển cảnh ngay, không bị trễ
 new Image().src = "assets/nen-ki-niem.jpg";
+
+const rotateUntil = Date.parse(ROTATE.until);
+if (nowMs() < rotateUntil) $("slide").src = ROTATE.src;
+// chu kỳ bám theo đồng hồ để nhiều màn hình chạy cùng lúc vẫn chuyển cảnh đồng loạt
+function slideOn(now) {
+  if (now >= rotateUntil) return false;
+  return Math.floor(now / 1000) % (ROTATE.countdownSec + ROTATE.slideSec) >= ROTATE.countdownSec;
+}
 
 function el(tag, cls, text) {
   const e = document.createElement(tag);
@@ -237,6 +270,7 @@ function tick() {
   $("hero").hidden = done;
   $("side").hidden = done;
   document.body.classList.toggle("is-live", done);
+  $("slide").classList.toggle("on", slideOn(now));
   if (!done) {
     const t = Math.floor(diff / 1000);
     document.querySelector(".clock").classList.toggle("off", t < 60);
