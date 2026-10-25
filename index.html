@@ -169,7 +169,7 @@ body.idle .hint { opacity: 0; }
     </div>
   </section>
 
-  <img class="slide" id="slide" alt="Hội thảo khoa học cán bộ trẻ các trường đại học sư phạm lần thứ XI">
+  <img class="slide" id="slide" alt="Full-day Programme, International Forum &amp; Intercultural Art Performance, 26/10/2026">
 </div>
 <div class="hint">Nhấn F hoặc nhấp chuột để toàn màn hình</div>
 
@@ -182,12 +182,13 @@ const EVENT_TIME = "2026-10-24T08:30:00+07:00";
 const DIGIT_IMG = d => `assets/so-${d}.png`;
 const UNIT_IMG = { "ngày": "assets/ngay.png", "giờ": "assets/gio.png", "phút": "assets/phut.png", "giây": "assets/giay.png" };
 
-// Chiếu xen kẽ ảnh giới thiệu hội thảo: đếm ngược 60 giây rồi ảnh 30 giây, lặp lại đến thời điểm "until".
-// Từ "until" trở đi chỉ chiếu đếm ngược. Muốn tắt hẳn thì đặt until là một thời điểm đã qua.
+// Chiếu xen kẽ ảnh "src" với màn hình chính: màn hình chính "baseSec" giây rồi ảnh "slideSec" giây, lặp lại.
+// Màn hình chính là đếm ngược trước 08g30 ngày 24/10, từ đó trở đi là nền chào mừng 50 năm (nen-ki-niem.jpg).
+// "until": thời điểm thôi chiếu xen kẽ (null = không giới hạn). Muốn tắt hẳn thì đặt until là một thời điểm đã qua.
 const ROTATE = {
-  src: "assets/nen-hoi-thao.png",
-  until: "2026-10-24T00:00:00+07:00",
-  countdownSec: 60,
+  src: "assets/nen-chuong-trinh-26-10.jpg",
+  until: null,
+  baseSec: 30,
   slideSec: 30,
 };
 // =====================
@@ -232,12 +233,12 @@ Object.values(UNIT_IMG).forEach(probe);
 // nạp sẵn ảnh nền màn hình kỉ niệm để lúc 08g30 chuyển cảnh ngay, không bị trễ
 new Image().src = "assets/nen-ki-niem.jpg";
 
-const rotateUntil = Date.parse(ROTATE.until);
+const rotateUntil = ROTATE.until ? Date.parse(ROTATE.until) : Infinity;
 if (nowMs() < rotateUntil) $("slide").src = ROTATE.src;
 // chu kỳ bám theo đồng hồ để nhiều màn hình chạy cùng lúc vẫn chuyển cảnh đồng loạt
 function slideOn(now) {
   if (now >= rotateUntil) return false;
-  return Math.floor(now / 1000) % (ROTATE.countdownSec + ROTATE.slideSec) >= ROTATE.countdownSec;
+  return Math.floor(now / 1000) % (ROTATE.baseSec + ROTATE.slideSec) >= ROTATE.baseSec;
 }
 
 function el(tag, cls, text) {

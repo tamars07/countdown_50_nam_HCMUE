@@ -135,7 +135,7 @@ Bốn ô Ngày, Giờ, Phút, Giây bên phải đếm ngược chính xác. S�
 
 ![Màn hình tự chuyển sang màn hình kỉ niệm khi đến giờ khai mạc](docs/man-hinh-chao-mung.jpg)
 
-**Chiếu xen kẽ ảnh Hội thảo (đến hết ngày 23/10/2026):** cứ 60 giây đếm ngược thì chuyển sang 30 giây ảnh giới thiệu Hội thảo khoa học cán bộ trẻ các trường ĐHSP lần thứ XI (`assets/nen-hoi-thao.png`), chuyển cảnh mờ dần, lặp lại liên tục. Chu kỳ 90 giây bám theo đồng hồ nên nhiều màn hình chạy cùng lúc sẽ chuyển cảnh đồng loạt. Từ 00g00 ngày 24/10 trang tự thôi chiếu ảnh Hội thảo, chỉ còn đếm ngược.
+**Chiếu xen kẽ (từ 25/10/2026):** đã qua giờ khai mạc nên không còn đếm ngược. Màn LED luân phiên nền chào mừng 50 năm (`assets/nen-ki-niem.jpg`) và ảnh Full-day Programme ngày 26/10 (`assets/nen-chuong-trinh-26-10.jpg`), mỗi ảnh 30 giây, chuyển cảnh mờ dần, lặp lại không giới hạn. Chu kỳ bám theo đồng hồ: giây 00–29 của mỗi phút là nền chào mừng, giây 30–59 là ảnh chương trình, nên nhiều màn hình chạy cùng lúc sẽ chuyển cảnh đồng loạt.
 
 ## 6. Diễn tập trước sự kiện
 
@@ -148,8 +148,7 @@ Có thể giả lập giờ hiện tại để xem trước các cảnh chuyển
 | Chuyển từ "phút" sang "giây" | `?now=2026-10-24T08:28:50%2B07:00` |
 | 10 giây cuối và màn hình kỉ niệm | `?now=2026-10-24T08:29:50%2B07:00` |
 | Ảnh tĩnh "còn 2 ngày", đồng hồ đứng ở 01:12:00:00 | `?now=2026-10-22T20:30:00%2B07:00&freeze` |
-| Lượt đếm ngược rồi chuyển sang ảnh Hội thảo | `?now=2026-10-23T14:00:55%2B07:00` |
-| Hết ngày 23/10, thôi chiếu ảnh Hội thảo | `?now=2026-10-23T23:59:50%2B07:00` |
+| Nền chào mừng chuyển sang ảnh chương trình 26/10 | `?now=2026-10-25T15:20:25%2B07:00` |
 
 Ví dụ: `file:///D:/countdown-50nam/index.html?now=2026-10-24T08:29:50%2B07:00`
 
@@ -165,7 +164,7 @@ Mở `index.html` bằng Notepad (nhấp phải › Open with › Notepad). Ph�
 | Muốn thay đổi | Cách làm |
 |---|---|
 | Giờ khai mạc | Sửa dòng `EVENT_TIME = "2026-10-24T08:30:00+07:00"` |
-| Chiếu xen kẽ ảnh Hội thảo | Sửa khối `ROTATE`: `src` (ảnh, tỉ lệ 13:7), `until` (thời điểm thôi chiếu xen kẽ), `countdownSec` (số giây đếm ngược), `slideSec` (số giây chiếu ảnh). Muốn tắt hẳn thì đặt `until` là thời điểm đã qua |
+| Chiếu xen kẽ ảnh | Sửa khối `ROTATE`: `src` (ảnh chiếu xen kẽ, tỉ lệ 13:7), `baseSec` (số giây màn hình chính), `slideSec` (số giây chiếu ảnh), `until` (thời điểm thôi chiếu xen kẽ, `null` = không giới hạn). Muốn tắt hẳn thì đặt `until` là thời điểm đã qua |
 | Logo tài trợ, tiêu đề, logo Trường | Nằm sẵn trong 2 ảnh nền `assets/nen-dem-nguoc.jpg` và `assets/nen-ki-niem.jpg`. Muốn đổi thì nhờ designer xuất lại ảnh nền cùng tỉ lệ 13:7 (tốt nhất đúng 2080 × 1120), đặt cùng tên đè lên file cũ |
 | Kiểu chữ số 3D | Thay các file `so-0.png` … `so-9.png` trong `assets/` (PNG nền trong suốt, cùng khổ cho cả 10 số). Thiếu file nào thì trang tự dùng chữ thay thế cho số đó |
 | Chữ 3D ngày/giờ/phút/giây | Thay các file `ngay.png`, `gio.png`, `phut.png`, `giay.png` trong `assets/` |
