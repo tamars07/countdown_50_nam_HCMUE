@@ -135,7 +135,7 @@ Bốn ô Ngày, Giờ, Phút, Giây bên phải đếm ngược chính xác. S�
 
 ![Màn hình tự chuyển sang màn hình kỉ niệm khi đến giờ khai mạc](docs/man-hinh-chao-mung.jpg)
 
-**Chiếu xen kẽ (từ 25/10/2026):** đã qua giờ khai mạc nên không còn đếm ngược. Màn LED luân phiên nền chào mừng 50 năm (`assets/nen-ki-niem.jpg`) và ảnh Full-day Programme ngày 26/10 (`assets/nen-chuong-trinh-26-10.jpg`), mỗi ảnh 30 giây, chuyển cảnh mờ dần, lặp lại không giới hạn. Chu kỳ bám theo đồng hồ: giây 00–29 của mỗi phút là nền chào mừng, giây 30–59 là ảnh chương trình, nên nhiều màn hình chạy cùng lúc sẽ chuyển cảnh đồng loạt.
+**Từ 28/10/2026:** màn LED chỉ hiện nền chào mừng 50 năm (`assets/nen-ki-niem.jpg`), không còn đếm ngược hay chiếu xen kẽ. Ngày 25–27/10 trang luân phiên nền này với ảnh Full-day Programme ngày 26/10 (`assets/nen-chuong-trinh-26-10.jpg`), mỗi ảnh 30 giây; muốn bật lại thì đặt `until` trong khối `ROTATE` thành một thời điểm trong tương lai, hoặc `null` để luân phiên không giới hạn.
 
 ## 6. Diễn tập trước sự kiện
 
