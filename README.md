@@ -135,7 +135,7 @@ Bốn ô Ngày, Giờ, Phút, Giây bên phải đếm ngược chính xác. S�
 
 ![Màn hình tự chuyển sang màn hình kỉ niệm khi đến giờ khai mạc](docs/man-hinh-chao-mung.jpg)
 
-**Từ 28/10/2026:** màn LED chỉ hiện nền chào mừng 50 năm (`assets/nen-ki-niem.jpg`), không còn đếm ngược hay chiếu xen kẽ. Ngày 25–27/10 trang luân phiên nền này với ảnh Full-day Programme ngày 26/10 (`assets/nen-chuong-trinh-26-10.jpg`), mỗi ảnh 30 giây; muốn bật lại thì đặt `until` trong khối `ROTATE` thành một thời điểm trong tương lai, hoặc `null` để luân phiên không giới hạn.
+**Từ 06/11/2026:** màn LED luân phiên nền chào mừng 50 năm (`assets/nen-ki-niem.jpg`) với nền Lễ kỷ niệm 50 năm Khoa Tiếng Pháp (`assets/nen-khoa-tieng-phap.jpg`), mỗi nền 30 giây, không còn đếm ngược. Muốn đổi ảnh chiếu xen kẽ thì sửa `src` trong khối `ROTATE`; muốn chỉ còn nền 50 năm thì đặt `until` là một thời điểm đã qua.
 
 ## 6. Diễn tập trước sự kiện
 
