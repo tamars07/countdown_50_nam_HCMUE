@@ -135,7 +135,7 @@ Bốn ô Ngày, Giờ, Phút, Giây bên phải đếm ngược chính xác. S�
 
 ![Màn hình tự chuyển sang màn hình kỉ niệm khi đến giờ khai mạc](docs/man-hinh-chao-mung.jpg)
 
-**Từ 06/11/2026:** màn LED luân phiên nền chào mừng 50 năm (`assets/nen-ki-niem.jpg`) với nền Lễ kỷ niệm 50 năm Khoa Tiếng Pháp (`assets/nen-khoa-tieng-phap.jpg`), mỗi nền 30 giây, không còn đếm ngược. Từ 17g00 ngày 07/11/2026 (mốc `until`) chỉ còn nền chào mừng 50 năm. Muốn đổi ảnh chiếu xen kẽ thì sửa `src` trong khối `ROTATE`; muốn chỉ còn nền 50 năm thì đặt `until` là một thời điểm đã qua.
+**Từ 07/11/2026:** màn LED luân phiên nền chào mừng 50 năm (`assets/nen-ki-niem.jpg`), nền Lễ kỷ niệm 50 năm Khoa Tiếng Pháp (`assets/nen-khoa-tieng-phap.jpg`, chiếu đến 17g00 ngày 07/11) và nền Lễ kỷ niệm 50 năm Khoa Sinh học (`assets/nen-khoa-sinh-hoc.jpg`, chiếu đến 17g00 ngày 08/11), mỗi nền 30 giây, không còn đếm ngược. Ảnh nào hết hạn thì tự rời khỏi vòng luân phiên; từ 17g00 ngày 08/11 chỉ còn nền chào mừng 50 năm.
 
 ## 6. Diễn tập trước sự kiện
 
@@ -164,7 +164,7 @@ Mở `index.html` bằng Notepad (nhấp phải › Open with › Notepad). Ph�
 | Muốn thay đổi | Cách làm |
 |---|---|
 | Giờ khai mạc | Sửa dòng `EVENT_TIME = "2026-10-24T08:30:00+07:00"` |
-| Chiếu xen kẽ ảnh | Sửa khối `ROTATE`: `src` (ảnh chiếu xen kẽ, tỉ lệ 13:7), `baseSec` (số giây màn hình chính), `slideSec` (số giây chiếu ảnh), `until` (thời điểm thôi chiếu xen kẽ, `null` = không giới hạn). Muốn tắt hẳn thì đặt `until` là thời điểm đã qua |
+| Chiếu luân phiên ảnh | Sửa khối `ROTATE`: `sec` (số giây mỗi cảnh), `slides` (danh sách ảnh chiếu luân phiên với màn hình chính, tỉ lệ 13:7; mỗi ảnh có `src`, `until` là thời điểm thôi chiếu, `null` = không giới hạn). Muốn thêm ảnh thì thêm một dòng vào `slides`; muốn bỏ ảnh thì xoá dòng đó |
 | Logo tài trợ, tiêu đề, logo Trường | Nằm sẵn trong 2 ảnh nền `assets/nen-dem-nguoc.jpg` và `assets/nen-ki-niem.jpg`. Muốn đổi thì nhờ designer xuất lại ảnh nền cùng tỉ lệ 13:7 (tốt nhất đúng 2080 × 1120), đặt cùng tên đè lên file cũ |
 | Kiểu chữ số 3D | Thay các file `so-0.png` … `so-9.png` trong `assets/` (PNG nền trong suốt, cùng khổ cho cả 10 số). Thiếu file nào thì trang tự dùng chữ thay thế cho số đó |
 | Chữ 3D ngày/giờ/phút/giây | Thay các file `ngay.png`, `gio.png`, `phut.png`, `giay.png` trong `assets/` |

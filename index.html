@@ -169,7 +169,7 @@ body.idle .hint { opacity: 0; }
     </div>
   </section>
 
-  <img class="slide" id="slide" alt="Lễ kỷ niệm 50 năm Ngày truyền thống Khoa Tiếng Pháp và chào mừng Ngày Nhà giáo Việt Nam 20/11/2026">
+  <div id="slides"></div>
 </div>
 <div class="hint">Nhấn F hoặc nhấp chuột để toàn màn hình</div>
 
@@ -182,14 +182,17 @@ const EVENT_TIME = "2026-10-24T08:30:00+07:00";
 const DIGIT_IMG = d => `assets/so-${d}.png`;
 const UNIT_IMG = { "ngày": "assets/ngay.png", "giờ": "assets/gio.png", "phút": "assets/phut.png", "giây": "assets/giay.png" };
 
-// Chiếu xen kẽ ảnh "src" với màn hình chính: màn hình chính "baseSec" giây rồi ảnh "slideSec" giây, lặp lại.
+// Chiếu luân phiên màn hình chính và các ảnh trong "slides", mỗi cảnh "sec" giây, lặp lại.
 // Màn hình chính là đếm ngược trước 08g30 ngày 24/10, từ đó trở đi là nền chào mừng 50 năm (nen-ki-niem.jpg).
-// "until": thời điểm thôi chiếu xen kẽ (null = không giới hạn). Muốn tắt hẳn thì đặt until là một thời điểm đã qua.
+// "until": thời điểm ảnh đó thôi chiếu (null = không giới hạn). Hết hạn hết thì chỉ còn màn hình chính.
 const ROTATE = {
-  src: "assets/nen-khoa-tieng-phap.jpg", // Lễ kỷ niệm 50 năm Khoa Tiếng Pháp, 07/11/2026
-  until: "2026-11-07T17:00:00+07:00", // sau 17g ngày 07/11 chỉ còn nền chào mừng 50 năm
-  baseSec: 30,
-  slideSec: 30,
+  sec: 30,
+  slides: [
+    { src: "assets/nen-khoa-tieng-phap.jpg", until: "2026-11-07T17:00:00+07:00",
+      alt: "Lễ kỷ niệm 50 năm Ngày truyền thống Khoa Tiếng Pháp và chào mừng Ngày Nhà giáo Việt Nam 20/11/2026" },
+    { src: "assets/nen-khoa-sinh-hoc.jpg", until: "2026-11-08T17:00:00+07:00",
+      alt: "Lễ kỷ niệm 50 năm Ngày truyền thống Khoa Sinh học và chào mừng 44 năm Ngày Nhà giáo Việt Nam" },
+  ],
 };
 // =====================
 
@@ -233,12 +236,20 @@ Object.values(UNIT_IMG).forEach(probe);
 // nạp sẵn ảnh nền màn hình kỉ niệm để lúc 08g30 chuyển cảnh ngay, không bị trễ
 new Image().src = "assets/nen-ki-niem.jpg";
 
-const rotateUntil = ROTATE.until ? Date.parse(ROTATE.until) : Infinity;
-if (nowMs() < rotateUntil) $("slide").src = ROTATE.src;
-// chu kỳ bám theo đồng hồ để nhiều màn hình chạy cùng lúc vẫn chuyển cảnh đồng loạt
-function slideOn(now) {
-  if (now >= rotateUntil) return false;
-  return Math.floor(now / 1000) % (ROTATE.baseSec + ROTATE.slideSec) >= ROTATE.baseSec;
+const slides = ROTATE.slides
+  .map(o => ({ ...o, end: o.until ? Date.parse(o.until) : Infinity }))
+  .filter(o => nowMs() < o.end);
+for (const o of slides) {
+  o.img = el("img", "slide");
+  o.img.src = o.src;
+  o.img.alt = o.alt || "";
+  $("slides").append(o.img);
+}
+// chu kỳ bám theo đồng hồ để nhiều màn hình chạy cùng lúc vẫn chuyển cảnh đồng loạt; cảnh 0 là màn hình chính
+function showSlide(now) {
+  const live = slides.filter(o => now < o.end);
+  const i = Math.floor(now / 1000 / ROTATE.sec) % (live.length + 1);
+  for (const o of slides) o.img.classList.toggle("on", o === live[i - 1]);
 }
 
 function el(tag, cls, text) {
@@ -271,7 +282,7 @@ function tick() {
   $("hero").hidden = done;
   $("side").hidden = done;
   document.body.classList.toggle("is-live", done);
-  $("slide").classList.toggle("on", slideOn(now));
+  showSlide(now);
   if (!done) {
     const t = Math.floor(diff / 1000);
     document.querySelector(".clock").classList.toggle("off", t < 60);
