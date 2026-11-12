@@ -135,7 +135,7 @@ Bốn ô Ngày, Giờ, Phút, Giây bên phải đếm ngược chính xác. S�
 
 ![Màn hình tự chuyển sang màn hình kỉ niệm khi đến giờ khai mạc](docs/man-hinh-chao-mung.jpg)
 
-**Từ 07/11/2026:** màn LED luân phiên nền chào mừng 50 năm (`assets/nen-ki-niem.jpg`), nền Lễ kỷ niệm 50 năm Khoa Tiếng Pháp (`assets/nen-khoa-tieng-phap.jpg`, chiếu đến 17g00 ngày 07/11) và nền Lễ kỷ niệm 50 năm Khoa Sinh học (`assets/nen-khoa-sinh-hoc.jpg`, chiếu đến 17g00 ngày 08/11), mỗi nền 30 giây, không còn đếm ngược. Ảnh nào hết hạn thì tự rời khỏi vòng luân phiên; từ 17g00 ngày 08/11 chỉ còn nền chào mừng 50 năm.
+**Từ 12/11/2026:** màn LED luân phiên nền Chào mừng 44 năm Ngày Nhà giáo Việt Nam và Ngày Văn hóa Việt Nam (`assets/nen-nha-giao-van-hoa.jpg`, đặt ở dòng `body.is-live #stage` trong CSS) với nền Liên hoan Tiếng hát Người Sư phạm (`assets/nen-lien-hoan-tieng-hat.jpg`, khai báo trong khối `ROTATE`), mỗi nền 30 giây, không giới hạn ngày kết thúc. Các nền cũ (50 năm Trường, Khoa Tiếng Pháp, Khoa Sinh học…) vẫn còn trong `assets/` nhưng không còn được chiếu.
 
 ## 6. Diễn tập trước sự kiện
 

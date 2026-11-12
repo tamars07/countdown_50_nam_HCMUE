@@ -48,7 +48,7 @@ body.idle { cursor: none; }
   background: var(--navy) url("assets/nen-dem-nguoc.jpg") 0 0 / 100% 100% no-repeat;
 }
 /* từ giờ khai mạc: đổi sang ảnh nền màn hình kỉ niệm (đã có logo, tiêu đề, tòa nhà, dải tài trợ) */
-body.is-live #stage { background-image: url("assets/nen-ki-niem.jpg"); }
+body.is-live #stage { background-image: url("assets/nen-nha-giao-van-hoa.jpg"); }
 
 /* cột trái: còn / số / đơn vị */
 .hero { position: absolute; left: 30px; top: 250px; width: 1040px; height: 690px; }
@@ -183,15 +183,14 @@ const DIGIT_IMG = d => `assets/so-${d}.png`;
 const UNIT_IMG = { "ngày": "assets/ngay.png", "giờ": "assets/gio.png", "phút": "assets/phut.png", "giây": "assets/giay.png" };
 
 // Chiếu luân phiên màn hình chính và các ảnh trong "slides", mỗi cảnh "sec" giây, lặp lại.
-// Màn hình chính là đếm ngược trước 08g30 ngày 24/10, từ đó trở đi là nền chào mừng 50 năm (nen-ki-niem.jpg).
+// Màn hình chính là đếm ngược trước 08g30 ngày 24/10, từ đó trở đi là nền đặt ở "body.is-live #stage" trong CSS
+// (từ 12/11/2026: nen-nha-giao-van-hoa.jpg; trước đó là nền chào mừng 50 năm nen-ki-niem.jpg).
 // "until": thời điểm ảnh đó thôi chiếu (null = không giới hạn). Hết hạn hết thì chỉ còn màn hình chính.
 const ROTATE = {
   sec: 30,
   slides: [
-    { src: "assets/nen-khoa-tieng-phap.jpg", until: "2026-11-07T17:00:00+07:00",
-      alt: "Lễ kỷ niệm 50 năm Ngày truyền thống Khoa Tiếng Pháp và chào mừng Ngày Nhà giáo Việt Nam 20/11/2026" },
-    { src: "assets/nen-khoa-sinh-hoc.jpg", until: "2026-11-08T17:00:00+07:00",
-      alt: "Lễ kỷ niệm 50 năm Ngày truyền thống Khoa Sinh học và chào mừng 44 năm Ngày Nhà giáo Việt Nam" },
+    { src: "assets/nen-lien-hoan-tieng-hat.jpg", until: null,
+      alt: "Liên hoan Tiếng hát Người Sư phạm, 14/11/2026" },
   ],
 };
 // =====================
@@ -234,7 +233,7 @@ function probe(src) {
 for (let d = 0; d <= 9; d++) probe(DIGIT_IMG(d));
 Object.values(UNIT_IMG).forEach(probe);
 // nạp sẵn ảnh nền màn hình kỉ niệm để lúc 08g30 chuyển cảnh ngay, không bị trễ
-new Image().src = "assets/nen-ki-niem.jpg";
+new Image().src = "assets/nen-nha-giao-van-hoa.jpg";
 
 const slides = ROTATE.slides
   .map(o => ({ ...o, end: o.until ? Date.parse(o.until) : Infinity }))
