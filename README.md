@@ -135,7 +135,9 @@ Bốn ô Ngày, Giờ, Phút, Giây bên phải đếm ngược chính xác. S�
 
 ![Màn hình tự chuyển sang màn hình kỉ niệm khi đến giờ khai mạc](docs/man-hinh-chao-mung.jpg)
 
-**Từ 12/11/2026:** màn LED luân phiên nền Chào mừng 44 năm Ngày Nhà giáo Việt Nam và Ngày Văn hóa Việt Nam (`assets/nen-nha-giao-van-hoa.jpg`, đặt ở dòng `body.is-live #stage` trong CSS) với nền Liên hoan Tiếng hát Người Sư phạm (`assets/nen-lien-hoan-tieng-hat.jpg`, khai báo trong khối `ROTATE`), mỗi nền 30 giây, không giới hạn ngày kết thúc. Các nền cũ (50 năm Trường, Khoa Tiếng Pháp, Khoa Sinh học…) vẫn còn trong `assets/` nhưng không còn được chiếu.
+**Từ 12/11/2026:** màn LED luân phiên nền Chào mừng 44 năm Ngày Nhà giáo Việt Nam và Ngày Văn hóa Việt Nam (`assets/nen-nha-giao-van-hoa.jpg`, đặt ở dòng `body.is-live #stage` trong CSS) với nền Liên hoan Tiếng hát Người Sư phạm (`assets/nen-lien-hoan-tieng-hat.jpg`, khai báo trong khối `ROTATE`), mỗi nền 15 giây.
+
+**Từ 13/11/2026:** thêm video khai mạc Tuần lễ "Tôn sư trọng đạo - Tự hào bản sắc" (`assets/video-led-3.mp4`, 2080 × 1120, 10 giây, không tiếng) vào vòng luân phiên. Video chiếu đúng độ dài của nó, nên một vòng là 15 + 15 + 10 = 40 giây. Không giới hạn ngày kết thúc. Các nền cũ (50 năm Trường, Khoa Tiếng Pháp, Khoa Sinh học…) vẫn còn trong `assets/` nhưng không còn được chiếu.
 
 ## 6. Diễn tập trước sự kiện
 
@@ -164,7 +166,7 @@ Mở `index.html` bằng Notepad (nhấp phải › Open with › Notepad). Ph�
 | Muốn thay đổi | Cách làm |
 |---|---|
 | Giờ khai mạc | Sửa dòng `EVENT_TIME = "2026-10-24T08:30:00+07:00"` |
-| Chiếu luân phiên ảnh | Sửa khối `ROTATE`: `sec` (số giây mỗi cảnh), `slides` (danh sách ảnh chiếu luân phiên với màn hình chính, tỉ lệ 13:7; mỗi ảnh có `src`, `until` là thời điểm thôi chiếu, `null` = không giới hạn). Muốn thêm ảnh thì thêm một dòng vào `slides`; muốn bỏ ảnh thì xoá dòng đó |
+| Chiếu luân phiên ảnh, video | Sửa khối `ROTATE`: `sec` (số giây màn hình chính và mỗi ảnh), `slides` (danh sách ảnh hoặc video `.mp4` chiếu luân phiên với màn hình chính, tỉ lệ 13:7; mỗi cảnh có `src`, `until` là thời điểm thôi chiếu, `null` = không giới hạn). Video chiếu đúng độ dài của nó, không tiếng; muốn một cảnh dài khác thì thêm `sec` riêng cho cảnh đó. Muốn thêm cảnh thì thêm một dòng vào `slides`; muốn bỏ thì xoá dòng đó |
 | Logo tài trợ, tiêu đề, logo Trường | Nằm sẵn trong 2 ảnh nền `assets/nen-dem-nguoc.jpg` và `assets/nen-ki-niem.jpg`. Muốn đổi thì nhờ designer xuất lại ảnh nền cùng tỉ lệ 13:7 (tốt nhất đúng 2080 × 1120), đặt cùng tên đè lên file cũ |
 | Kiểu chữ số 3D | Thay các file `so-0.png` … `so-9.png` trong `assets/` (PNG nền trong suốt, cùng khổ cho cả 10 số). Thiếu file nào thì trang tự dùng chữ thay thế cho số đó |
 | Chữ 3D ngày/giờ/phút/giây | Thay các file `ngay.png`, `gio.png`, `phut.png`, `giay.png` trong `assets/` |

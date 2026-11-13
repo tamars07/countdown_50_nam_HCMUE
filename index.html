@@ -126,7 +126,7 @@ body.is-live #stage { background-image: url("assets/nen-nha-giao-van-hoa.jpg"); 
   white-space: nowrap;
 }
 
-/* ảnh giới thiệu hội thảo chiếu xen kẽ, phủ toàn khung */
+/* ảnh/video chiếu xen kẽ, phủ toàn khung */
 .slide {
   position: absolute; inset: 0; width: 100%; height: 100%; z-index: 10;
   opacity: 0; transition: opacity .8s ease; pointer-events: none;
@@ -182,15 +182,19 @@ const EVENT_TIME = "2026-10-24T08:30:00+07:00";
 const DIGIT_IMG = d => `assets/so-${d}.png`;
 const UNIT_IMG = { "ngày": "assets/ngay.png", "giờ": "assets/gio.png", "phút": "assets/phut.png", "giây": "assets/giay.png" };
 
-// Chiếu luân phiên màn hình chính và các ảnh trong "slides", mỗi cảnh "sec" giây, lặp lại.
+// Chiếu luân phiên màn hình chính và các ảnh/video trong "slides", lặp lại.
 // Màn hình chính là đếm ngược trước 08g30 ngày 24/10, từ đó trở đi là nền đặt ở "body.is-live #stage" trong CSS
 // (từ 12/11/2026: nen-nha-giao-van-hoa.jpg; trước đó là nền chào mừng 50 năm nen-ki-niem.jpg).
-// "until": thời điểm ảnh đó thôi chiếu (null = không giới hạn). Hết hạn hết thì chỉ còn màn hình chính.
+// Màn hình chính và mỗi ảnh chiếu "sec" giây; video (.mp4/.webm) chiếu đúng độ dài của nó, không tiếng.
+// Muốn một cảnh dài khác thì thêm "sec" riêng cho cảnh đó.
+// "until": thời điểm cảnh đó thôi chiếu (null = không giới hạn). Hết hạn hết thì chỉ còn màn hình chính.
 const ROTATE = {
-  sec: 30,
+  sec: 15,
   slides: [
     { src: "assets/nen-lien-hoan-tieng-hat.jpg", until: null,
       alt: "Liên hoan Tiếng hát Người Sư phạm, 14/11/2026" },
+    { src: "assets/video-led-3.mp4", until: null,
+      alt: "Khai mạc Tuần lễ Tôn sư trọng đạo - Tự hào bản sắc, 14/11/2026" },
   ],
 };
 // =====================
@@ -239,16 +243,33 @@ const slides = ROTATE.slides
   .map(o => ({ ...o, end: o.until ? Date.parse(o.until) : Infinity }))
   .filter(o => nowMs() < o.end);
 for (const o of slides) {
-  o.img = el("img", "slide");
+  o.video = /\.(mp4|webm)$/i.test(o.src);
+  o.img = el(o.video ? "video" : "img", "slide");
+  if (o.video) {
+    Object.assign(o.img, { muted: true, playsInline: true, preload: "auto" });
+    o.img.setAttribute("aria-label", o.alt || "");
+  } else {
+    o.img.alt = o.alt || "";
+  }
   o.img.src = o.src;
-  o.img.alt = o.alt || "";
   $("slides").append(o.img);
 }
+// độ dài cảnh, làm tròn giây để chuyển cảnh khớp nhịp tick mỗi giây; video chưa đọc xong độ dài thì tạm tính "sec"
+const slideSec = o => o.sec ?? (o.video && o.img.duration ? Math.max(1, Math.round(o.img.duration)) : ROTATE.sec);
 // chu kỳ bám theo đồng hồ để nhiều màn hình chạy cùng lúc vẫn chuyển cảnh đồng loạt; cảnh 0 là màn hình chính
 function showSlide(now) {
   const live = slides.filter(o => now < o.end);
-  const i = Math.floor(now / 1000 / ROTATE.sec) % (live.length + 1);
-  for (const o of slides) o.img.classList.toggle("on", o === live[i - 1]);
+  const secs = [ROTATE.sec, ...live.map(slideSec)];
+  let t = now / 1000 % secs.reduce((a, b) => a + b), i = 0;
+  while (t >= secs[i]) t -= secs[i++];
+  for (const o of slides) {
+    const on = o === live[i - 1];
+    o.img.classList.toggle("on", on);
+    if (!o.video || on === o.playing) continue;
+    o.playing = on;
+    // vào cảnh: phát từ đúng vị trí trong cảnh (thường là đầu video); rời cảnh: dừng
+    if (on) { o.img.currentTime = t; o.img.play().catch(() => {}); } else o.img.pause();
+  }
 }
 
 function el(tag, cls, text) {
