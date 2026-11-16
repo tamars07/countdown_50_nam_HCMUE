@@ -139,6 +139,8 @@ Bốn ô Ngày, Giờ, Phút, Giây bên phải đếm ngược chính xác. S�
 
 **Từ 13/11/2026:** thêm video khai mạc Tuần lễ "Tôn sư trọng đạo - Tự hào bản sắc" (`assets/video-led-3.mp4`, 2080 × 1120, 10 giây, không tiếng) vào vòng luân phiên. Video chiếu đúng độ dài của nó, nên một vòng là 15 + 15 + 10 = 40 giây. Không giới hạn ngày kết thúc. Các nền cũ (50 năm Trường, Khoa Tiếng Pháp, Khoa Sinh học…) vẫn còn trong `assets/` nhưng không còn được chiếu.
 
+**Từ 16/11/2026:** màn LED chỉ còn nền Chào mừng 44 năm Ngày Nhà giáo Việt Nam và Ngày Văn hóa Việt Nam (`assets/nen-nha-giao-van-hoa.jpg`), không chiếu xen kẽ (`slides: []` trong khối `ROTATE`). Ảnh Liên hoan và video khai mạc vẫn còn trong `assets/`; muốn chiếu lại thì thêm lại vào `slides`, ví dụ `{ src: "assets/video-led-3.mp4", until: null }`.
+
 ## 6. Diễn tập trước sự kiện
 
 Có thể giả lập giờ hiện tại để xem trước các cảnh chuyển. Thêm `?now=…` vào sau `index.html` trong đường dẫn mở trang (hoặc trong lệnh kiosk). Ký hiệu `%2B` là dấu cộng của múi giờ `+07:00`.
